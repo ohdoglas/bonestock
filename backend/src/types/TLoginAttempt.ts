@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 type TLoginAttempt = {
     id: ReturnType <typeof uuidv4>;
-    user_id: string;
+    user_id: ReturnType <typeof uuidv4>;
     ip_address?: string;
     attempt_time: Date;
     success: boolean;

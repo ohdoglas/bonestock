@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 type TUserProfile = {
     id: ReturnType <typeof uuidv4>;
-    user_id: string;
+    user_id: ReturnType <typeof uuidv4>;
     first_name?: string;
     last_name?: string;
     date_of_birth?: Date;
