@@ -4,11 +4,11 @@ type TProduct = {
     id: ReturnType <typeof uuidv4>;
     name: string;
     description?: string;
-    category: string;
+    category_id: string;
     barcode?: string;
     supplier_id?: ReturnType <typeof uuidv4>;
     stock: number;
-    unit: string;
+    unit_id: string;
     price: number;
     expiration_date?: Date;
     created_at: Date;
