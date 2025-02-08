@@ -132,3 +132,7 @@ dist
 # postgres
 backend/data/postgres/
 
+#prisma
+backend/prisma/migrations/
+
+

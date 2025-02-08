@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String            @id @default(uuid()) @db.Uuid
+  username          String            @unique @db.VarChar(50)
+  email             String            @unique @db.VarChar(255)
+  password          String            @db.VarChar(255)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  last_login        DateTime?
+  status            String            @db.VarChar(20)
+  role              String            @db.VarChar(20)
+  confirmationToken String?           @unique
+  emailVerified     Boolean           @default(false)
+
+  userPermissions   UserPermissions[] @relation("UserPermissionsUser")
+  userRoles         UserRoles[]       @relation("UserId")
+  loginAttempts     LoginAttempt[]    @relation
+}
+
+model LoginAttempt {
+  id             String   @id @default(uuid()) @db.Uuid
+  user_id        String   @db.Uuid
+  ip_address     String?  @db.VarChar(45)
+  attempt_time   DateTime @default(now())
+  success        Boolean
+  failed_attempts Int     @default(0)
+  lock_until     DateTime?
+
+  user           User     @relation(fields: [user_id], references: [id])
+  @@index([user_id])
+}
+
+
+model Roles {
+  id          String      @id @default(uuid()) @db.Uuid
+  role_name   String      @unique @db.VarChar(50)
+  description String?
+  status      Boolean     @default(true)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  deleted_at  DateTime?
+
+  userRoles   UserRoles[] @relation("UserRoleId")
+}
+
+model Permissions {
+  id              String            @id @default(uuid()) @db.Uuid
+  permission      String            @unique @db.VarChar(100)
+  description     String?
+  status          Boolean           @default(true)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  deleted_at      DateTime?
+
+  userPermissions UserPermissions[] @relation("UserPermissionId")
+}
+
+model UserRoles {
+  id          String    @id @default(uuid()) @db.Uuid
+  user_id     String    @db.Uuid
+  role_id     String    @db.Uuid
+  assigned_at DateTime  @default(now())
+  revoked_at  DateTime?
+
+  role        Roles     @relation("UserRoleId", fields: [role_id], references: [id])
+  user        User      @relation("UserId", fields: [user_id], references: [id])
+}
+
+model UserPermissions {
+  id            String      @id @default(uuid()) @db.Uuid
+  user_id       String      @db.Uuid
+  permission_id String      @db.Uuid
+  granted_at    DateTime    @default(now())
+  revoked_at    DateTime?
+
+  permission    Permissions @relation("UserPermissionId", fields: [permission_id], references: [id])
+  user          User        @relation("UserPermissionsUser", fields: [user_id], references: [id])
+}
