@@ -1,0 +1,44 @@
+{
+  "name": "bonestock-backend",
+  "version": "1.0.0",
+  "description": "bonestock - supply controller",
+  "keywords": [
+    "stock",
+    "supply",
+    "inventory"
+  ],
+  "homepage": "https://github.com/ohdoglas/bonestock#readme",
+  "bugs": {
+    "url": "https://github.com/ohdoglas/bonestock/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohdoglas/bonestock.git"
+  },
+  "license": "MIT",
+  "author": "ohdoglas | mateusbaia",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.3.1",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.3.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/node": "^22.13.1",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
