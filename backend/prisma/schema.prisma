@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model InitalSetup {
+model InitialSetup {
   id                String    @id @default(uuid()) @db.Uuid
   setupComplete     Boolean   @default(false)
   setupToken        String    @unique @db.VarChar(255)
