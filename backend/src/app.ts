@@ -1,11 +1,33 @@
 import express, { Application } from "express";
 import "dotenv/config";
 import routes from "./routes/router";
+import SETUP from "./utils/messages/setupMsg";
 
+const adminMail = process.env.ADMIN_MAIL;
 const app: Application = express();
 
 app.use(express.json());
 
-app.use(routes);
+async function validateEnv() {
+    if (!adminMail) {
+        throw new Error(SETUP.ERR.MISSING_MAIL_ENV)
+    };
+};
+
+
+(
+    async () => {
+        try {
+            await validateEnv();
+
+            app.use(routes);
+
+        } catch (error) {
+            console.error(SETUP.ERR.SEND_EMAIL_FAILED, error);
+            throw error;
+        }
+    }
+)
+
 
 export default app;
