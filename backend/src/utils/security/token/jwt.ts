@@ -2,6 +2,7 @@ import "dotenv/config";
 import jwt from "jsonwebtoken";
 import SERVER from "../../messages/serverMessages";
 import USER from "../../messages/userMessages";
+import User from "../../../models/user";
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
 
