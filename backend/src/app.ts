@@ -4,6 +4,8 @@ import routes from "./routes/router";
 import SETUP from "./utils/messages/setupMsg";
 import Role from "./models/roles";
 import Permission from "./models/permissions";
+import InitialSetup from "./models/initialSetup";
+import sendSetupMail from "./utils/security/setupMail";
 
 const adminMail = process.env.ADMIN_MAIL;
 const app: Application = express();
@@ -29,11 +31,32 @@ async function seedDataBase() {
     }
 }
 
+async function checkInitialSetup() {
+    try {
+        const setupComplete = await InitialSetup.isSetupComplete();
+
+        if (!setupComplete) {
+            const token = await InitialSetup.generateToken();
+
+            await InitialSetup.startSetupConfig(token);
+
+            if (adminMail) {
+                await sendSetupMail(adminMail, token);
+            }
+        }
+    } catch (error) {
+        console.error(SETUP.ERR.SEND_EMAIL_FAILED, error);
+        throw error;
+    }
+}
+
 (
     async () => {
         try {
             await validateEnv();
             await seedDataBase();
+            // await checkInitialSetup();
+
             app.use(routes);
 
         } catch (error) {
@@ -42,6 +65,5 @@ async function seedDataBase() {
         }
     }
 )();
-
 
 export default app;
