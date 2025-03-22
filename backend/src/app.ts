@@ -7,20 +7,16 @@ const adminMail = process.env.ADMIN_MAIL;
 const app: Application = express();
 
 app.use(express.json());
-
 async function validateEnv() {
     if (!adminMail) {
         throw new Error(SETUP.ERR.MISSING_MAIL_ENV)
     };
 };
 
-
 (
     async () => {
         try {
             await validateEnv();
-
-            app.use(routes);
 
         } catch (error) {
             console.error(SETUP.ERR.SEND_EMAIL_FAILED, error);
@@ -29,5 +25,6 @@ async function validateEnv() {
     }
 )
 
+app.use(routes);
 
 export default app;

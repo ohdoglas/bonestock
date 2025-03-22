@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
+import { Status } from "../utils/enums/status";
+import { Roles } from "../utils/enums/roles";
 type TUser = {
     id: ReturnType <typeof uuidv4>;
     username: string;
@@ -7,8 +9,8 @@ type TUser = {
     created_at: Date;
     updated_at: Date;
     last_login?: Date;
-    status: string;
-    role: string;
+    status: Status;
+    role: Roles;
     confirmationToken?: string;
     emailVerified: boolean;
 }
