@@ -1,0 +1,72 @@
+import prisma from "../config/prisma";
+import { Permissions } from "../utils/enums/permissions";
+import { v4 as uuidv4 } from "uuid";
+
+const permissions = [
+    {
+        permission: Permissions.READ_ONLY, description: 'Read-Only Access'
+    },
+    {
+        permission: Permissions.MANAGE_STOCK, description: 'Manage Stock'
+    },
+    {
+        permission: Permissions.MANAGE_PURCHASES, description: 'Manage Purchases'
+    },
+    {
+        permission: Permissions.MANAGE_USERS, description: 'Manage User Accounts'
+    },
+    {
+        permission: Permissions.VIEW_DASHBOARD, description: 'View Dashboard'
+    },
+    {
+        permission: Permissions.MANAGE_RECIPES, description: 'Manage Recipes'
+    },
+    {
+        permission: Permissions.MANAGE_SALES, description: 'Manage Sales'
+    },
+    {
+        permission: Permissions.AUDIT_LOGS, description: 'Audit Logs'
+    }
+]
+
+export default class Permission {
+    static async seed() {
+        const createdPermissions = [];
+
+        for (const permission of permissions) {
+            const permissionsExists = await prisma.permissions.findUnique({
+                where: { permission: permission.permission }
+            });
+
+            if (!permissionsExists) {
+                await prisma.permissions.create({
+                    data: permission
+                });
+                createdPermissions.push(permission.permission);
+            }
+        }
+        return createdPermissions;
+    }
+
+    static async assignPermissions(permissionName: string, userId: string) {
+        const permissionId = await prisma.permissions.findUnique({
+            where: { permission: permissionName },
+            select: { id: true }
+        });
+
+        if (!permissionId) {
+            return false;
+        }
+
+        const assign = await prisma.userPermissions.create({
+            data: {
+                id: uuidv4(),
+                user_id: userId,
+                permission_id: permissionId.id,
+                granted_at: new Date()
+            }
+        });
+
+        return assign;
+    }
+}
