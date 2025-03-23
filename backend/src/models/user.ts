@@ -100,6 +100,13 @@ export default class User {
         }
     }
 
+    static async findConfirmationToken(token: string) {
+        return await prisma.user.findUnique({
+            where: { confirmationToken: token },
+            select: { emailVerified: true }
+        });
+    }
+
     static async findById(id: string) {
         const find = await prisma.user.findUnique({
             where: { id: id }

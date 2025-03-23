@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import initSetupRoute from "./serverSide/initSetupRoute";
+import { userRoute } from "./userRoutes";
 
 const routes = Router();
 
@@ -10,5 +11,6 @@ routes.get('/', (req: Request, res: Response) => {
 });
 
 routes.use('/', initSetupRoute)
+routes.use('/', userRoute);
 
 export default routes;

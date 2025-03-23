@@ -15,7 +15,7 @@ const USER = {
         MISSING_EMAIL_CONFIRM_TOKEN: `Um token é necessário para confirmar seu e-mail. Por favor, use o link enviado para seu e-mail, que se parece com este: "https:seudominio/token".`,
         INVALID_CONFIRMATION_TOKEN: `O token fornecido é inválido ou não corresponde a nenhum usuário cadastrado.
         Um token é necessário para confirmar seu e-mail. Por favor, use o link enviado para seu e-mail, que se parece com este:
-        "https:seudominio/token".`,
+        "https:nossodominio/token".`,
         ALREADY_VERIFIED: "Parece que seu e-mail já foi confirmado. Se tiver dúvidas ou precisar de mais assistência, entre em contato com nossa equipe de suporte.",
         MISSING_USERNAME_EMAIL: "E-mail ou nome de usuário é obrigatório.",
         MISSING_PASSWORD: "Senha é obrigatória.",
