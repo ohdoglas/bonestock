@@ -1,6 +1,6 @@
 const SETUP = {
     ERR: {
-        MISSING_FIELDS: "",
+        MISSING_FIELDS: "Por favor, para fazer a configuração, todos campos necessários devem ser preenchidos!",
         INVALID_TOKEN: "O token fornecido não é válido.",
         SEND_EMAIL_FAILED: "Falha ao enviar e-mail de confirmação.",
         MISSING_MAIL_ENV: "ADMIN_MAIL não configurado."
