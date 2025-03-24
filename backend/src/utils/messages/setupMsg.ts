@@ -3,7 +3,8 @@ const SETUP = {
         MISSING_FIELDS: "Por favor, para fazer a configuração, todos campos necessários devem ser preenchidos!",
         INVALID_TOKEN: "O token fornecido não é válido.",
         SEND_EMAIL_FAILED: "Falha ao enviar e-mail de confirmação.",
-        MISSING_MAIL_ENV: "ADMIN_MAIL não configurado."
+        MISSING_MAIL_ENV: "ADMIN_MAIL não configurado.",
+        INITIAL_SETUP_NOT_COMPLETED: "A configuração inicial ainda não foi concluída, não será possível continuar com a requisição atual!"
     },
     SUCCESS: {
         ALREADY_COMPLETED: "A configuração inicial para o super-admin já foi completada.",

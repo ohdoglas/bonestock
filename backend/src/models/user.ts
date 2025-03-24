@@ -119,7 +119,7 @@ export default class User {
         return find;
     }
 
-    static async findByUserName(username: string) {
+    static async findByUsername(username: string) {
         const find = await prisma.user.findUnique({
             where: { username: username}
         });

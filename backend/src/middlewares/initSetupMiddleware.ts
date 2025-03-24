@@ -48,7 +48,7 @@ export default class initSetupMiddleware {
                 });
             }
 
-            const uniqueUsername = await User.findByUserName(username);
+            const uniqueUsername = await User.findByUsername(username);
             if (uniqueUsername) {
                 return res.status(409).json({
                     message: USER.ERR.NOT_UNIQUE_USERNAME
