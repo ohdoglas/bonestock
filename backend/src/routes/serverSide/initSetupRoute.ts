@@ -4,9 +4,11 @@ import initSetup from "../../controllers/initSetup";
 
 const initSetupRoute = Router();
 
-const ownerAuthentication = new initSetupMiddleware().authenticate;
-const setupOwner = new initSetup().controller;
+const initialSetup = {
+    middleware: new initSetupMiddleware().authenticate,
+    controller: new initSetup().controller
+}
 
-initSetupRoute.post('/setup/owner', ownerAuthentication, setupOwner);
+initSetupRoute.post('/setup/owner', initialSetup.middleware, initialSetup.controller);
 
 export default initSetupRoute;

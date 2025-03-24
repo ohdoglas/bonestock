@@ -6,6 +6,7 @@ import { Roles } from "../../utils/enums/roles";
 import Permission from "../../models/permissions";
 import { Permissions } from "../../utils/enums/permissions";
 import Role from "../../models/roles";
+import USER from "../../utils/messages/userMessages";
 
 
 
@@ -25,6 +26,10 @@ export default class userRegistration {
         Role.assignUserRoles(Roles.VIEWER, newUser.id);
         Permission.assignPermissions(Permissions.READ_ONLY, newUser.id);
         Permission.assignPermissions(Permissions.VIEW_DASHBOARD, newUser.id);
+
+        return res.status(201).json({
+            message: USER.SUCCESS.CONFIRM_EMAIL_SENT
+        });
 
         } catch (error) {
             const erro = error as Error;

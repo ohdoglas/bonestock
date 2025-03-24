@@ -3,15 +3,25 @@ import confirmEmailMiddleware from "../middlewares/userMiddlewares/authenticateE
 import emailConfirmationController from "../controllers/userControllers/emailConfirmation";
 import userRegistrationMiddleware from "../middlewares/userMiddlewares/authenticateUserRegistration";
 import userRegistration from "../controllers/userControllers/register";
+import LoginMiddleware from "../middlewares/userMiddlewares/authenticateUserLogin";
+import Login from "../controllers/userControllers/login";
 
 
 export const userRoute = Router();
 
-const authenticateEmailConfirmation = new confirmEmailMiddleware().authenticate;
-const confirmEmail = new emailConfirmationController().confirm;
+const emailConfirmation = {
+    middleware: new confirmEmailMiddleware().authenticate,
+    controller: new emailConfirmationController().confirm
+}
+const register = {
+    middleware: new userRegistrationMiddleware().authenticate,
+    controller: new userRegistration().controller
+}
+const login = {
+    middleware: new LoginMiddleware().authenticate,
+    controller: new Login().controller
+}
 
-const authenticateUserRegistration = new userRegistrationMiddleware().authenticate;
-const register = new userRegistration().controller;
-
-userRoute.get('/confirm/:token', authenticateEmailConfirmation, confirmEmail);
-userRoute.post('/registration', authenticateUserRegistration, register);
+userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
+userRoute.post('/registration', register.middleware, register.controller);
+userRoute.post('/login', login.middleware, login.controller);
