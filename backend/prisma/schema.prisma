@@ -37,9 +37,23 @@ model User {
   userPermissions UserPermissions[] @relation("UserPermissionsUser")
   userRoles       UserRoles[]       @relation("UserId")
   loginAttempts   LoginAttempt[]    @relation
+  passwordResetTokens PasswordResetToken[]
   profile         UserProfile?
   inventories     Inventory[]
 }
+
+model PasswordResetToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  user_id    String    @db.Uuid
+  token      String    @unique
+  expires_at DateTime?
+  used       Boolean   @default(false)
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
 
 model UserProfile {
   id            String    @id @default(uuid()) @db.Uuid
