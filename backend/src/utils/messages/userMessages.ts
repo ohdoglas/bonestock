@@ -21,12 +21,15 @@ const USER = {
         MISSING_PASSWORD: "Senha é obrigatória.",
         INVALID_LOGIN_CREDENTIALS: "E-mail/nome de usuário ou senha inválidos.",
         EMAIL_CONFIRMATION_REQUIRED: "Seu endereço de e-mail ainda não foi confirmado. Por favor, confirme seu e-mail antes de tentar fazer login. Verifique sua caixa de entrada para encontrar o e-mail de confirmação ou solicite um novo, se necessário.",
-        ACCOUNT_NOT_ACTIVE: "Sua conta está atualmente inativa. Para resolver esse problema, entre em contato com nossa equipe de suporte. Estamos aqui para ajudar!"
+        ACCOUNT_NOT_ACTIVE: "Sua conta está atualmente inativa. Para resolver esse problema, entre em contato com nossa equipe de suporte. Estamos aqui para ajudar!",
+        RESET_PASSWORD_MISSING_FIELDS: "Para redefinir a senha, informe seu nome de usuário ou e-mail.",
+
     },
     SUCCESS: {
         EMAIL_CONFIRMATION: "Confirmação de e-mail concluída com sucesso! Agora você pode acessar sua conta.",
         CONFIRM_EMAIL_SENT: `Sua conta foi criada com sucesso. Para ativá-la, verifique seu e-mail e clique no link de confirmação que enviamos.
         Se não encontrar o e-mail na sua caixa de entrada, verifique a pasta de spam ou lixo eletrônico.`,
+        RESET_PASSWORD_REQUEST_CREATED: "Enviamos um e-mail com instruções para redefinir sua senha. Se não encontrar na caixa de entrada, verifique a pasta de spam."
     }
 }
 
