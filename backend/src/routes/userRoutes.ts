@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import confirmEmailMiddleware from "../middlewares/userMiddlewares/authenticateEmailConfirmation";
 import emailConfirmationController from "../controllers/userControllers/emailConfirmation";
 import userRegistrationMiddleware from "../middlewares/userMiddlewares/authenticateUserRegistration";
@@ -7,7 +7,9 @@ import LoginMiddleware from "../middlewares/userMiddlewares/authenticateUserLogi
 import Login from "../controllers/userControllers/login";
 import ResetPasswordRequestMiddleware from "../middlewares/userMiddlewares/authenticatePasswordResetRequest";
 import ResetPasswordRequest from "../controllers/userControllers/resetPasswordRequest";
-
+import PasswordResetMiddleware from "../middlewares/userMiddlewares/authenticatePasswordReset";
+import ResetPassword from "../controllers/userControllers/resetPassword";
+import { authenticateToken } from "../middlewares/authenticateToken";
 
 export const userRoute = Router();
 
@@ -28,7 +30,20 @@ const resetPasswordRequest = {
     controller: new ResetPasswordRequest().controller
 };
 
+const resetPassword = {
+    middleware: new PasswordResetMiddleware().authenticate,
+    controller: new ResetPassword().controller
+}
+
 userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
 userRoute.post('/registration', register.middleware, register.controller);
 userRoute.post('/login', login.middleware, login.controller);
-userRoute.post('/request-reset-password', resetPasswordRequest.middleware, resetPasswordRequest.controller);
+userRoute.post('/request-password-reset', resetPasswordRequest.middleware, resetPasswordRequest.controller);
+userRoute.post('/password-reset', resetPassword.middleware, resetPassword.controller);
+userRoute.use(authenticateToken);
+
+userRoute.get('/tokentest', (req: Request, res: Response) => {
+    return res.status(200).json({
+        message: "Token Test OK"
+    });
+});

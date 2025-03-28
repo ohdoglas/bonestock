@@ -3,7 +3,7 @@ import SERVER from "../../utils/messages/serverMessages";
 import prisma from "../../config/prisma";
 import PasswordResetToken from "../../models/passwordResetToken";
 import USER from "../../utils/messages/userMessages";
-import sendResetPasswordEmail from "../../utils/security/resetPasswordMail";
+import sendResetPasswordEmail from "../../utils/security/resetPasswordRequestMail";
 
 
 export default class ResetPasswordRequest {

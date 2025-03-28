@@ -22,14 +22,21 @@ const USER = {
         INVALID_LOGIN_CREDENTIALS: "E-mail/nome de usuário ou senha inválidos.",
         EMAIL_CONFIRMATION_REQUIRED: "Seu endereço de e-mail ainda não foi confirmado. Por favor, confirme seu e-mail antes de tentar fazer login. Verifique sua caixa de entrada para encontrar o e-mail de confirmação ou solicite um novo, se necessário.",
         ACCOUNT_NOT_ACTIVE: "Sua conta está atualmente inativa. Para resolver esse problema, entre em contato com nossa equipe de suporte. Estamos aqui para ajudar!",
-        RESET_PASSWORD_MISSING_FIELDS: "Para redefinir a senha, informe seu nome de usuário ou e-mail.",
+        RESET_PASSWORD_REQUEST_MISSING_FIELDS: "Para redefinir a senha, informe seu nome de usuário ou e-mail.",
+        RESET_PASSWORD_MISSING_FIELDS: "Para redefinir a senha, informe o token e nova senha.",
+        RESET_PASSWORD_DOES_NOT_MATCH: "As senhas informadas não coincidem. Por favor, verifique e tente novamente.",
+        RESET_PASSWORD_TOKEN_IS_EXPIRED: "Seu token de redefinição de senha não é mais válido. Por favor, solicite uma nova recuperação de senha.",
+        RESET_PASSWORD_TOKEN_IS_NOT_VALID: "O token informado é inválido. Verifique se copiou corretamente ou solicite uma nova recuperação de senha.",
+        RESET_PASSWORD_TOKEN_ALREDY_USED: "O token fornecido já foi utilizado! Caso ainda precise redefinir sua senha será necessário fazer uma nova requisição de redefinição de senha.",
+        RESET_PASSWORD_OLD_NEW_PASSWORD_MATCH: "A nova senha não pode ser igual à senha atual. Por favor, escolha uma senha diferente.",
 
     },
     SUCCESS: {
         EMAIL_CONFIRMATION: "Confirmação de e-mail concluída com sucesso! Agora você pode acessar sua conta.",
         CONFIRM_EMAIL_SENT: `Sua conta foi criada com sucesso. Para ativá-la, verifique seu e-mail e clique no link de confirmação que enviamos.
         Se não encontrar o e-mail na sua caixa de entrada, verifique a pasta de spam ou lixo eletrônico.`,
-        RESET_PASSWORD_REQUEST_CREATED: "Enviamos um e-mail com instruções para redefinir sua senha. Se não encontrar na caixa de entrada, verifique a pasta de spam."
+        RESET_PASSWORD_REQUEST_CREATED: "Enviamos um e-mail com instruções para redefinir sua senha. Se não encontrar na caixa de entrada, verifique a pasta de spam.",
+        RESET_PASSWORD_COMPLETED: "Sua senha foi redefinida com sucesso! Enviamos um e-mail de segurança para você com a confirmação dessa alteração. Se não foi você quem solicitou essa mudança, entre em contato com nosso Suporte imediatamente."
     }
 }
 

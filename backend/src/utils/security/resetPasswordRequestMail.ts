@@ -6,7 +6,7 @@ const HOST = process.env.ZOHO_SMTP_HOST;
 const mailUser = process.env.ZOHO_MAIL_USER;
 const mailPass = process.env.ZOHO_MAIL_PASSWORD;
 
-export default async function sendResetPasswordCompletedEmail(email: string) {
+export default async function sendResetPasswordEmail(email: string, token: string) {
 
     const tranporter = nodemailer.createTransport({
         host: HOST,
@@ -21,15 +21,19 @@ export default async function sendResetPasswordCompletedEmail(email: string) {
     const mailOptions = {
         from: mailUser,
         to: email,
-        subject: 'Redefinição de Senha - Ação Concluída',
+        subject: 'Redefinição de Senha - Ação Necessária',
         text: `Olá,
 
-        Sua senha foi redefinida com sucesso! 🔑
+    Recebemos uma solicitação para redefinir sua senha. Para continuar, copie o token abaixo e acesse o link para preencher os campos necessários:
 
-        Agora você pode acessar sua conta utilizando a nova senha. Caso não tenha solicitado essa alteração, recomendamos que entre em contato conosco imediatamente para garantir a segurança da sua conta.
+    🔑 Token de redefinição: ${token}
 
-        Se tiver qualquer dúvida ou precisar de ajuda adicional, nossa equipe de suporte está à disposição para auxiliá-lo.`,
+    📌 Link para redefinição: http://localhost:${PORT}/reset-password
 
+    Este token expira em 30 minutos. Se não foi você quem solicitou a redefinição, ignore este e-mail.
+
+    Caso tenha dúvidas ou precise de ajuda, entre em contato com nosso suporte.
+`,
     };
 
     try {

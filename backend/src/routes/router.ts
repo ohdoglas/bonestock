@@ -13,12 +13,5 @@ routes.get('/', (req: Request, res: Response) => {
 
 routes.use('/', initSetupRoute)
 routes.use('/', userRoute);
-routes.use(authenticateToken);
-
-routes.get('/tokentest', (req: Request, res: Response) => {
-    return res.status(200).json({
-        message: "Token Test OK"
-    });
-});
 
 export default routes;

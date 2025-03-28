@@ -23,8 +23,17 @@ export default class PasswordResetToken {
         return string;
     }
 
-    isExpired(token: string) {
-        return this.expires_at !== undefined && this.expires_at < new Date();
+    static async isExpired(token: string): Promise<boolean> {
+        const tokenData = await prisma.passwordResetToken.findUnique({
+            where: { token },
+            select: { expires_at: true }
+        });
+
+        if (!tokenData || !tokenData.expires_at) {
+            return true;
+        }
+
+        return tokenData.expires_at < new Date();
     }
 
     static async isValid(token: string) {

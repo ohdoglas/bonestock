@@ -12,7 +12,7 @@ export default class ResetPasswordRequestMiddleware {
         try {
             if (!username && !email) {
                 return res.status(400).json({
-                    message: USER.ERR.RESET_PASSWORD_MISSING_FIELDS
+                    message: USER.ERR.RESET_PASSWORD_REQUEST_MISSING_FIELDS
                 });
             }
 

@@ -84,11 +84,11 @@ export default class User {
         }
     }
 
-    async updatePassword(newPassword: string) {
+    static async updatePassword(user_id: string, newPassword: string) {
         try {
             const hashedPassword = await User.hashPassword(newPassword);
             await prisma.user.update({
-                where: { id: this.id },
+                where: { id: user_id },
                 data: {
                     password: hashedPassword,
                     updated_at: new Date()
