@@ -12,6 +12,7 @@ import ResetPassword from "../controllers/userControllers/resetPassword";
 import { authenticateToken } from "../middlewares/authenticateToken";
 import EditPasswordMiddleware from "../middlewares/userMiddlewares/authenticateEditPassword";
 import EditPassword from "../controllers/userControllers/editPassword";
+import AuthController from "../controllers/userControllers/logout";
 
 export const userRoute = Router();
 
@@ -42,6 +43,10 @@ const editPassword = {
     controller: new EditPassword().controller
 }
 
+const logout = {
+    controller: new AuthController().logout
+}
+
 userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
 userRoute.post('/registration', register.middleware, register.controller);
 userRoute.post('/login', login.middleware, login.controller);
@@ -49,6 +54,7 @@ userRoute.post('/request-password-reset', resetPasswordRequest.middleware, reset
 userRoute.post('/password-reset', resetPassword.middleware, resetPassword.controller);
 userRoute.use(authenticateToken);
 userRoute.patch('/edit-password', editPassword.middleware, editPassword.controller);
+userRoute.post('/logout', logout.controller);
 
 userRoute.get('/tokentest', (req: Request, res: Response) => {
     return res.status(200).json({

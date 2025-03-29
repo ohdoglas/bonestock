@@ -42,8 +42,14 @@ export async function authenticateToken(req: TRequestUserID, res: Response, next
 
         next();
     } catch (error) {
-        const erro = error as Error;
-        console.error(erro);
+        if (error instanceof jwt.TokenExpiredError) {
+
+            return res.status(401).json({
+                message: SERVER.ERR.EXPIRED_TOKEN
+            });
+        }
+
+        console.error(error);
         return res.status(500).json({
             message: SERVER.ERR.INTERNAL_ERROR
         });
