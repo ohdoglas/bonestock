@@ -6,6 +6,7 @@ import hash from "../utils/security/hash/passwordHash";
 import { generateConfirmationToken } from "../utils/security/token/emailConfirmationToken";
 import prisma from "../config/prisma";
 import sendConfirmationEmail from "../utils/security/userEmailConfirmation";
+import SERVER from "../utils/messages/serverMessages";
 
 export default class User {
     readonly id: string;
@@ -183,5 +184,18 @@ export default class User {
                 last_login: new Date()
             }
         })
+    }
+
+    static async invalidateSessions(user_id: string) {
+        try {
+            await prisma.invalidToken.deleteMany({
+                where: { user_id: user_id },
+            });
+
+            return { success: true, message: SERVER.SUCCESS.INVALIDATE_SESSIONS }
+        } catch (error) {
+            console.error("Erro ao invalidar sessões:", error);
+            throw new Error(SERVER.ERR.INVALIDATE_SESSIONS_FAILED)
+        }
     }
 }
