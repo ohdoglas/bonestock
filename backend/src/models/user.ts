@@ -185,17 +185,4 @@ export default class User {
             }
         })
     }
-
-    static async invalidateSessions(user_id: string) {
-        try {
-            await prisma.invalidToken.deleteMany({
-                where: { user_id: user_id },
-            });
-
-            return { success: true, message: SERVER.SUCCESS.INVALIDATE_SESSIONS }
-        } catch (error) {
-            console.error("Erro ao invalidar sessões:", error);
-            throw new Error(SERVER.ERR.INVALIDATE_SESSIONS_FAILED)
-        }
-    }
 }

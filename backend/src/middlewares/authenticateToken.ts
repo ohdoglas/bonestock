@@ -34,7 +34,7 @@ export async function authenticateToken(req: TRequestUserID, res: Response, next
 
         if (isTokenInvalid) {
             return res.status(401).json({
-                message: SERVER.ERR.SESSIONS_NOT_VALID
+                message: SERVER.ERR.SESSION_NOT_VALID
             });
         }
 

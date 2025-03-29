@@ -5,6 +5,7 @@ import validatePassword from "../../utils/validation/validatePassword";
 import comparePassword from "../../utils/security/hash/unhashPassword";
 import TRequestUserID from "../../types/TRequest";
 import User from "../../models/user";
+import prisma from "../../config/prisma";
 
 
 
@@ -53,7 +54,7 @@ export default class EditPasswordMiddleware {
 
             const validateOldPassword = await comparePassword(oldPassword, userExists.password);
             if (!validateOldPassword) {
-                await this.delayResponse();
+                await EditPasswordMiddleware.delayResponse();
                 return res.status(401).json({
                     message: USER.ERR.EDIT_PASSWORD_WRONG_OLD_PASSWORD
                 });
@@ -62,6 +63,24 @@ export default class EditPasswordMiddleware {
             if (newPassword !== repeatNewPassword) {
                 return res.status(400).json({
                     message: USER.ERR.EDIT_PASSWORD_REPEAT_PASSWORD_NOT_MATCH
+                });
+            }
+
+            const userPasswordCompare = await prisma.user.findUnique({
+                where: { id: userId },
+                select: { password: true }
+            });
+
+            if (!userPasswordCompare) {
+                return res.status(404).json({
+                    message: USER.ERR.USER_NOT_FOUND
+                });
+            }
+
+            const passwordCompare = await comparePassword(newPassword, userPasswordCompare.password);
+            if (passwordCompare) {
+                return res.status(400).json({
+                    message: USER.ERR.RESET_PASSWORD_OLD_NEW_PASSWORD_MATCH
                 });
             }
 
@@ -82,7 +101,7 @@ export default class EditPasswordMiddleware {
         }
     }
 
-    private async delayResponse() {
+    private static async delayResponse() {
         return new Promise((resolve) => setTimeout(resolve, 2000));
     }
 }

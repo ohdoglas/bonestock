@@ -35,6 +35,8 @@ const USER = {
         EDIT_PASSWORD_WRONG_OLD_PASSWORD: "A senha atual informada está incorreta. Por favor, verifique e tente novamente.",
         EDIT_PASSWORD_REPEAT_PASSWORD_NOT_MATCH: "A nova senha e a confirmação não coincidem. Por favor, verifique e tente novamente.",
         EDIT_PASSWORD_INVALID_INPUT_TYPE: "Todos os campos devem ser preenchidos com formatos válidos (strings).",
+        EDIT_PASSWORD_OLD_NEW_PASSWORD_MATCH: "A nova senha não pode ser igual à senha atual. Por favor, escolha uma senha diferente.",
+
 
     },
     SUCCESS: {
