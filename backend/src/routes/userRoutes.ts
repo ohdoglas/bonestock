@@ -13,6 +13,9 @@ import { authenticateToken } from "../middlewares/authenticateToken";
 import EditPasswordMiddleware from "../middlewares/userMiddlewares/authenticateEditPassword";
 import EditPassword from "../controllers/userControllers/editPassword";
 import AuthController from "../controllers/userControllers/logout";
+import EditProfileMiddleware from "../middlewares/userMiddlewares/authenticateEditProfile";
+import CreateProfile from "../controllers/userControllers/createProfile";
+import EditProfile from "../controllers/userControllers/editProfile";
 
 export const userRoute = Router();
 
@@ -32,20 +35,23 @@ const resetPasswordRequest = {
     middleware: new ResetPasswordRequestMiddleware().authenticate,
     controller: new ResetPasswordRequest().controller
 };
-
 const resetPassword = {
     middleware: new PasswordResetMiddleware().authenticate,
     controller: new ResetPassword().controller
-}
-
+};
 const editPassword = {
     middleware: new EditPasswordMiddleware().authenticate,
     controller: new EditPassword().controller
-}
-
+};
 const logout = {
     controller: new AuthController().logout
-}
+};
+const createOrEditProfile = {
+    middleware: new EditProfileMiddleware().authenticate,
+    createProfileController: new CreateProfile().controller,
+    editProfileController: new EditProfile().controller
+
+};
 
 userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
 userRoute.post('/registration', register.middleware, register.controller);
@@ -55,6 +61,7 @@ userRoute.post('/password-reset', resetPassword.middleware, resetPassword.contro
 userRoute.use(authenticateToken);
 userRoute.patch('/edit-password', editPassword.middleware, editPassword.controller);
 userRoute.post('/logout', logout.controller);
+userRoute.post('/edit-profile', createOrEditProfile.middleware, createOrEditProfile.createProfileController, createOrEditProfile.editProfileController);
 
 userRoute.get('/tokentest', (req: Request, res: Response) => {
     return res.status(200).json({

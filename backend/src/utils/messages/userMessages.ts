@@ -37,15 +37,28 @@ const USER = {
         EDIT_PASSWORD_INVALID_INPUT_TYPE: "Todos os campos devem ser preenchidos com formatos válidos (strings).",
         EDIT_PASSWORD_OLD_NEW_PASSWORD_MATCH: "A nova senha não pode ser igual à senha atual. Por favor, escolha uma senha diferente.",
 
+        PROFILE_INVALID_INPUT_TYPE: "Todos os campos devem ser preenchidos com formatos válidos (strings).",
+        PROFILE_USER_ID_NOT_PROVIDED: "Para criar ou editar um perfil de usuário é necessário informar o ID do mesmo.",
+        PROFILE_USER_OCCUPATION_NOT_PROVIDED: "Para criar ou editar um perfil de usuário é obrigatório informar sua função/ocupação",
+        PROFILE_NOT_FOUND: "O perfil de usuário para o ID fornecido não foi encontrado.",
+        INVALID_DATE_FORMAT: "O formato de data de aniversário fornecido não é válido. A data deve estar no formato DD/MM/AAAA",
+        INVALID_UUID_FORMAT: "O formato do ID do usuário está incorreto. Por favor, forneça um UUID válido.",
+        PROFILE_MISSING_MANDATORY_FIELDS: "Para editar ou criar um perfil de usuário é necessário que todos os campos obrigatórios sejam fornecidos. (User ID e Cargo/Ocupação)",
+        USER_HAS_NO_MANAGE_USER_PERMISSIONS: "Você não ter permissões concedidas para editar dados de outros usuários, para obter permissões para essa ação contate seus superiores ou entre em contato com nosso suporte."
+
 
     },
     SUCCESS: {
         EMAIL_CONFIRMATION: "Confirmação de e-mail concluída com sucesso! Agora você pode acessar sua conta.",
         CONFIRM_EMAIL_SENT: `Sua conta foi criada com sucesso. Para ativá-la, verifique seu e-mail e clique no link de confirmação que enviamos.
         Se não encontrar o e-mail na sua caixa de entrada, verifique a pasta de spam ou lixo eletrônico.`,
+
         RESET_PASSWORD_REQUEST_CREATED: "Enviamos um e-mail com instruções para redefinir sua senha. Se não encontrar na caixa de entrada, verifique a pasta de spam.",
         RESET_PASSWORD_COMPLETED: "Sua senha foi redefinida com sucesso! Enviamos um e-mail de segurança para você com a confirmação dessa alteração. Se não foi você quem solicitou essa mudança, entre em contato com nosso Suporte imediatamente.",
-        EDIT_PASSWORD_COMPLETED: "Sua senha foi redefinida com sucesso! Enviamos um e-mail de segurança para você com a confirmação dessa alteração. Se não foi você quem solicitou essa mudança, entre em contato com nosso Suporte imediatamente."
+
+        EDIT_PASSWORD_COMPLETED: "Sua senha foi redefinida com sucesso! Enviamos um e-mail de segurança para você com a confirmação dessa alteração. Se não foi você quem solicitou essa mudança, entre em contato com nosso Suporte imediatamente.",
+
+        PROFILE_CHANGES_MADE: "As alterações no perfil de usuário foram feitas com sucesso!"
 
     }
 }

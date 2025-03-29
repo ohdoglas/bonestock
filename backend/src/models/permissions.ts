@@ -69,4 +69,28 @@ export default class Permission {
 
         return assign;
     }
+
+    static async hasEditUserPermission(user_id: string) {
+        const permissionID = await prisma.permissions.findFirst({
+            where: { permission: Permissions.MANAGE_USERS },
+            select: { id: true }
+        });
+
+        if (!permissionID) {
+            return false;
+        }
+
+        const hasPermission = await prisma.userPermissions.findFirst({
+            where: {
+                permission_id: permissionID.id,
+                AND:
+                { user_id: user_id }
+            },
+        });
+        if (!hasPermission) {
+            return false;
+        }
+
+        return hasPermission
+    }
 }

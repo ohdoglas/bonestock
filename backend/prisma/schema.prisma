@@ -72,7 +72,7 @@ model UserProfile {
   first_name    String?
   last_name     String?
   date_of_birth DateTime?
-  phone_number  String?
+  phone_number  String?   @unique
   occupation    String?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
