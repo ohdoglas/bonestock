@@ -3,6 +3,7 @@ import { NextFunction, Response } from "express";
 import TRequestUserID from "../types/TRequest";
 import SERVER from "../utils/messages/serverMessages";
 import User from '../models/user';
+import prisma from '../config/prisma';
 
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
@@ -24,6 +25,16 @@ export async function authenticateToken(req: TRequestUserID, res: Response, next
         if (!userExists) {
             return res.status(404).json({
                 message: SERVER.ERR.USER_NOT_FOUND
+            });
+        }
+
+        const isTokenInvalid = await prisma.invalidToken.findUnique({
+            where: { token }
+        });
+
+        if (isTokenInvalid) {
+            return res.status(401).json({
+                message: SERVER.ERR.SESSIONS_NOT_VALID
             });
         }
 
