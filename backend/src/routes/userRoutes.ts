@@ -59,16 +59,16 @@ const addRole = {
     controller: new AddRole().controller
 };
 
-userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
-userRoute.post('/registration', register.middleware, register.controller);
-userRoute.post('/login', login.middleware, login.controller);
-userRoute.post('/request-password-reset', resetPasswordRequest.middleware, resetPasswordRequest.controller);
-userRoute.post('/password-reset', resetPassword.middleware, resetPassword.controller);
+userRoute.get('/users/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
+userRoute.post('/users/registration', register.middleware, register.controller);
+userRoute.post('/users/login', login.middleware, login.controller);
+userRoute.post('/users/request-password-reset', resetPasswordRequest.middleware, resetPasswordRequest.controller);
+userRoute.post('/users/password-reset', resetPassword.middleware, resetPassword.controller);
 userRoute.use(authenticateToken);
-userRoute.patch('/edit-password', editPassword.middleware, editPassword.controller);
-userRoute.post('/logout', logout.controller);
-userRoute.post('/edit-profile', createOrEditProfile.middleware, createOrEditProfile.createProfileController, createOrEditProfile.editProfileController);
-userRoute.post('/add-role-permission', addRole.middleware, addRole.controller);
+userRoute.patch('/users/edit-password', editPassword.middleware, editPassword.controller);
+userRoute.post('/users/logout', logout.controller);
+userRoute.post('/users/edit-profile', createOrEditProfile.middleware, createOrEditProfile.createProfileController, createOrEditProfile.editProfileController);
+userRoute.post('/users/add-role-permission', addRole.middleware, addRole.controller);
 
 userRoute.get('/tokentest', (req: Request, res: Response) => {
     return res.status(200).json({
