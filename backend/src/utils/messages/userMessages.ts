@@ -53,7 +53,11 @@ const USER = {
         USER_IS_NOT_OWNER: "Você não tem permissões suficientes para ceder ROLE de OWNER para o usuário informado. Somente usuários com ROLE de OWNER podem realizar está ação.",
 
 
-        USER_ID_NOT_FOUND: "Houve um problema ao autenticar seu usuário, por favor, faça login novamente. Se o problema persistir, entre em contato com o nosso suporte."
+        USER_ID_NOT_FOUND: "Houve um problema ao autenticar seu usuário, por favor, faça login novamente. Se o problema persistir, entre em contato com o nosso suporte.",
+
+        CANT_DELETE_OWNER: "ERRO CRITICO: Somente um usuário com permissões de Super Admin pode deletar um usuário Super Admin.",
+        MISSING_USER_ID: "O ID do usuário a ser deletado não foi informado. Para deletar um usuário, é obrigatório fornecer um ID válido.",
+        CANT_DELETE_SUPER_ADMIN: "Ação bloqueada: este usuário é o super administrador base da aplicação e não pode ser removido.",
 
 
     },
@@ -69,8 +73,10 @@ const USER = {
 
         PROFILE_CHANGES_MADE: "As alterações no perfil de usuário foram feitas com sucesso!",
 
-        ROLE_ADDED_SUCCESSFULLY: "Ação realizada com sucesso: A ROLE especificada foi adicionada ao ID de usuário especifícado",
+        ROLE_ADDED_SUCCESSFULLY: "Ação realizada com sucesso: A ROLE especificada foi adicionada ao ID de usuário especifícado.",
 
+        USER_DELETED_SUCCESSFULLY: "Ação realizada com sucesso: Usuário deletado com sucesso.",
+        OWN_USER_DELETED_SUCCESSFULLY: "Ação realizada com sucesso: Sua conta foi deletada com sucesso."
     }
 }
 
