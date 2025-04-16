@@ -14,11 +14,11 @@ datasource db {
 }
 
 model InitialSetup {
-  id                String    @id @default(uuid()) @db.Uuid
-  setupComplete     Boolean   @default(false)
-  setupToken        String    @unique @db.VarChar(255)
-  created_at        DateTime  @default(now())
-  completed_at      DateTime?
+  id            String    @id @default(uuid()) @db.Uuid
+  setupComplete Boolean   @default(false)
+  setupToken    String    @unique @db.VarChar(255)
+  created_at    DateTime  @default(now())
+  completed_at  DateTime?
 }
 
 model User {
@@ -33,23 +33,26 @@ model User {
   role              String    @db.VarChar(20)
   confirmationToken String?   @unique
   emailVerified     Boolean   @default(false)
+  isProtected       Boolean?   @default(false)
 
-  userPermissions UserPermissions[] @relation("UserPermissionsUser")
-  userRoles       UserRoles[]       @relation("UserId")
-  loginAttempts   LoginAttempt[]    @relation
-  invalidTokens InvalidToken[]
+  userPermissions     UserPermissions[]    @relation("UserUserPermissions")
+  userRoles           UserRoles[]          @relation("UserUserRoles")
+  loginAttempts       LoginAttempt[]
+  invalidTokens       InvalidToken[]
   passwordResetTokens PasswordResetToken[]
-  profile         UserProfile?
-  inventories     Inventory[]
+  profile             UserProfile?
+  inventories         Inventory[]
+  stockMovements      StockMovement[]      @relation("UserStockMovements")
+  inventoryItems      InventoryItem[]      @relation("UserInventoryItems")
 }
 
 model InvalidToken {
-  id                String    @id @default(uuid()) @db.Uuid
-  user_id    String    @db.Uuid
-  token      String    @unique
-  created_at        DateTime  @default(now())
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  token      String   @unique
+  created_at DateTime @default(now())
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -61,7 +64,7 @@ model PasswordResetToken {
   expires_at DateTime?
   used       Boolean   @default(false)
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -77,7 +80,7 @@ model UserProfile {
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model LoginAttempt {
@@ -89,7 +92,7 @@ model LoginAttempt {
   failed_attempts Int       @default(0)
   lock_until      DateTime?
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -125,8 +128,8 @@ model UserRoles {
   assigned_at DateTime  @default(now())
   revoked_at  DateTime?
 
+  user User  @relation("UserUserRoles", fields: [user_id], references: [id], onDelete: Cascade)
   role Roles @relation("UserRoleId", fields: [role_id], references: [id])
-  user User  @relation("UserId", fields: [user_id], references: [id])
 }
 
 model UserPermissions {
@@ -137,7 +140,7 @@ model UserPermissions {
   revoked_at    DateTime?
 
   permission Permissions @relation("UserPermissionId", fields: [permission_id], references: [id])
-  user       User        @relation("UserPermissionsUser", fields: [user_id], references: [id])
+  user       User        @relation("UserUserPermissions", fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Product {
@@ -190,6 +193,7 @@ model Supplier {
 
 model StockMovement {
   id          String   @id @default(uuid()) @db.Uuid
+  user_id     String?  @db.Uuid
   product_id  String   @db.Uuid
   type_id     String   @db.Uuid
   quantity    Int
@@ -198,6 +202,7 @@ model StockMovement {
   source      String?
   created_at  DateTime @default(now())
 
+  user    User?             @relation("UserStockMovements", fields: [user_id], references: [id], onDelete: SetNull)
   product Product           @relation(fields: [product_id], references: [id])
   type    StockMovementType @relation(fields: [type_id], references: [id])
 }
@@ -210,29 +215,32 @@ model StockMovementType {
 
 model Inventory {
   id         String   @id @default(uuid()) @db.Uuid
-  user_id    String   @db.Uuid
+  user_id    String?  @db.Uuid
   date       DateTime @default(now())
   status     String   @default("pending") // Ex: pending, completed
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  user           User            @relation(fields: [user_id], references: [id])
+  user           User?           @relation(fields: [user_id], references: [id], onDelete: SetNull)
   inventoryItems InventoryItem[]
 }
 
 model InventoryItem {
-  id             String @id @default(uuid()) @db.Uuid
-  inventory_id   String @db.Uuid
-  product_id     String @db.Uuid
+  id             String  @id @default(uuid()) @db.Uuid
+  inventory_id   String  @db.Uuid
+  product_id     String  @db.Uuid
+  user_id        String? @db.Uuid
   recorded_stock Int
   real_stock     Int
-  discrepancy    Int    @default(0)
+  discrepancy    Int     @default(0)
 
   inventory Inventory @relation(fields: [inventory_id], references: [id])
   product   Product   @relation(fields: [product_id], references: [id])
+  user      User?     @relation("UserInventoryItems", fields: [user_id], references: [id], onDelete: SetNull)
 
   @@index([inventory_id])
   @@index([product_id])
+  @@index([user_id])
 }
 
 model Recipe {
