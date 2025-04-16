@@ -22,7 +22,7 @@ export default async function sendConfirmationEmail(email: string, token: string
         from: mailUser,
         to: email,
         subject: 'Importante: Confirme seu Registro de Usuário',
-        text: `Por favor, confirme seu registro de usuário clicando no link a seguir: http://localhost:${PORT}/confirm/${token}`,
+        text: `Por favor, confirme seu registro de usuário clicando no link a seguir: http://localhost:${PORT}/users/confirm/${token}`,
     }
 
     try {
