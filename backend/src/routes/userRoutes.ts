@@ -18,6 +18,9 @@ import CreateProfile from "../controllers/userControllers/createProfile";
 import EditProfile from "../controllers/userControllers/editProfile";
 import AddRoleMiddleware from "../middlewares/userMiddlewares/authenticateAddRole";
 import AddRole from "../controllers/userControllers/addRole";
+import DeleteUserMiddleware from "../middlewares/userMiddlewares/authenticateDeleteUser";
+import DeleteUser from "../controllers/userControllers/deleteAccount";
+import DeleteOwnUser from "../controllers/userControllers/deleteOwnAccount";
 
 export const userRoute = Router();
 
@@ -59,6 +62,12 @@ const addRole = {
     controller: new AddRole().controller
 };
 
+const deleteUser = {
+    middleware: new DeleteUserMiddleware().authenticate,
+    deleteOtherUserController: new DeleteUser().controller,
+    deleteOwnUserController: new DeleteOwnUser().controller
+};
+
 userRoute.get('/users/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
 userRoute.post('/users/registration', register.middleware, register.controller);
 userRoute.post('/users/login', login.middleware, login.controller);
@@ -69,6 +78,7 @@ userRoute.patch('/users/edit-password', editPassword.middleware, editPassword.co
 userRoute.post('/users/logout', logout.controller);
 userRoute.post('/users/edit-profile', createOrEditProfile.middleware, createOrEditProfile.createProfileController, createOrEditProfile.editProfileController);
 userRoute.post('/users/add-role-permission', addRole.middleware, addRole.controller);
+userRoute.delete('/users/delete-user/:id', deleteUser.middleware, deleteUser.deleteOtherUserController, deleteUser.deleteOwnUserController);
 
 userRoute.get('/tokentest', (req: Request, res: Response) => {
     return res.status(200).json({
