@@ -168,6 +168,15 @@ export default class User {
         return verified.emailVerified === true;
     }
 
+    static async isUserProtected(id: string): Promise<boolean> {
+        const user = await prisma.user.findUnique({
+            where: { id },
+            select: { isProtected: true }
+        });
+
+        return user?.isProtected === true;
+    }
+
     static async verifyEmail(token: string) {
         await prisma.user.update({
             where: { confirmationToken: token },
@@ -184,5 +193,11 @@ export default class User {
                 last_login: new Date()
             }
         })
+    }
+
+    static async delete(id: string) {
+        await prisma.user.delete({
+            where: { id: id}
+        });
     }
 }

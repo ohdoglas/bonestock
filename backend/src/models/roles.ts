@@ -84,7 +84,7 @@ export default class Role {
         return role;
     }
 
-    static async hasOwnerRole(userId: string, role: string) {
+    static async hasOwnerRole(userId: string, role?: string) {
 
         const roleId = await prisma.roles.findFirst({
             where: { role_name: Roles.OWNER },
