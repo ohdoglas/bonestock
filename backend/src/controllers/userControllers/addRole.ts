@@ -4,6 +4,7 @@ import SERVER from "../../utils/messages/serverMessages";
 import Role from "../../models/roles";
 import Permission from "../../models/permissions";
 import USER from "../../utils/messages/userMessages";
+import User from "../../models/user";
 
 
 export default class AddRole {
@@ -15,6 +16,8 @@ export default class AddRole {
             await Role.assignUserRoles(role.toUpperCase(), id);
 
             await Permission.assignRolePermissions(role.toUpperCase(), id);
+
+            await User.changeRole(id, role.toUpperCase());
 
             return res.status(200).json({
                 message: USER.SUCCESS.ROLE_ADDED_SUCCESSFULLY

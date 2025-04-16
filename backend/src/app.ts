@@ -55,7 +55,7 @@ async function checkInitialSetup() {
         try {
             await validateEnv();
             await seedDataBase();
-            // await checkInitialSetup();
+            await checkInitialSetup();
 
             app.use(routes);
 

@@ -28,7 +28,7 @@ export default async function sendResetPasswordEmail(email: string, token: strin
 
     🔑 Token de redefinição: ${token}
 
-    📌 Link para redefinição: http://localhost:${PORT}/users/reset-password
+    📌 Link para redefinição: http://localhost:${PORT}/users/password-reset
 
     Este token expira em 30 minutos. Se não foi você quem solicitou a redefinição, ignore este e-mail.
 

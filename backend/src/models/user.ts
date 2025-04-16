@@ -186,6 +186,13 @@ export default class User {
         });
     }
 
+    static async changeRole(id: string, role: string) {
+        await prisma.user.update({
+            where: {id: id},
+            data: { role: role}
+        });
+    }
+
     static async updateLastLogin (email: string) {
         await prisma.user.update({
             where: { email: email },
