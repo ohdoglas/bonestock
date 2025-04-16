@@ -86,4 +86,11 @@ export default class InitialSetup {
 
         return newSuperAdmin;
     }
+
+    static async enableUserProtection(email: string) {
+        await prisma.user.update({
+            where: { email: email },
+            data: { isProtected: true }
+        });
+    }
 }

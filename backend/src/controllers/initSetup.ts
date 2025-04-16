@@ -17,6 +17,7 @@ export default class initSetup {
             const superAdmin = await InitialSetup.createAdmin(username, email, password);
 
             await InitialSetup.markSetupComplete(token);
+            await InitialSetup.enableUserProtection(email);
 
             await Role.assignUserRoles(Roles.OWNER, superAdmin.id);
             await Permission.assignPermissions(Permissions.VIEW_DASHBOARD, superAdmin.id);
