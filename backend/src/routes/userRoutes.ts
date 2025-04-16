@@ -16,6 +16,8 @@ import AuthController from "../controllers/userControllers/logout";
 import EditProfileMiddleware from "../middlewares/userMiddlewares/authenticateEditProfile";
 import CreateProfile from "../controllers/userControllers/createProfile";
 import EditProfile from "../controllers/userControllers/editProfile";
+import AddRoleMiddleware from "../middlewares/userMiddlewares/authenticateAddRole";
+import AddRole from "../controllers/userControllers/addRole";
 
 export const userRoute = Router();
 
@@ -52,6 +54,10 @@ const createOrEditProfile = {
     editProfileController: new EditProfile().controller
 
 };
+const addRole = {
+    middleware: new AddRoleMiddleware().authenticate,
+    controller: new AddRole().controller
+};
 
 userRoute.get('/confirm/:token', emailConfirmation.middleware, emailConfirmation.controller);
 userRoute.post('/registration', register.middleware, register.controller);
@@ -62,6 +68,7 @@ userRoute.use(authenticateToken);
 userRoute.patch('/edit-password', editPassword.middleware, editPassword.controller);
 userRoute.post('/logout', logout.controller);
 userRoute.post('/edit-profile', createOrEditProfile.middleware, createOrEditProfile.createProfileController, createOrEditProfile.editProfileController);
+userRoute.post('/add-role-permission', addRole.middleware, addRole.controller);
 
 userRoute.get('/tokentest', (req: Request, res: Response) => {
     return res.status(200).json({

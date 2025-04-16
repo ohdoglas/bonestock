@@ -1,6 +1,7 @@
 import prisma from "../config/prisma";
 import { Permissions } from "../utils/enums/permissions";
 import { v4 as uuidv4 } from "uuid";
+import { RolePermissions } from "../utils/enums/rolePermissions";
 
 const permissions = [
     {
@@ -92,5 +93,24 @@ export default class Permission {
         }
 
         return hasPermission
+    }
+
+    static async assignRolePermissions(role: string, userId: string) {
+        const roleKey = role as keyof typeof RolePermissions;
+        const permissions = RolePermissions[roleKey];
+
+        if (!permissions) {
+            throw new Error(`Role '${role}' não encontrada.`);
+        }
+
+        for (const permission of permissions) {
+            try {
+                await Permission.assignPermissions(permission, userId);
+            } catch (error) {
+                console.error(`Erro ao atribuir permissão ${permission}`, error);
+            }
+        }
+
+        return true;
     }
 }

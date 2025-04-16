@@ -44,7 +44,16 @@ const USER = {
         INVALID_DATE_FORMAT: "O formato de data de aniversário fornecido não é válido. A data deve estar no formato DD/MM/AAAA",
         INVALID_UUID_FORMAT: "O formato do ID do usuário está incorreto. Por favor, forneça um UUID válido.",
         PROFILE_MISSING_MANDATORY_FIELDS: "Para editar ou criar um perfil de usuário é necessário que todos os campos obrigatórios sejam fornecidos. (User ID e Cargo/Ocupação)",
-        USER_HAS_NO_MANAGE_USER_PERMISSIONS: "Você não ter permissões concedidas para editar dados de outros usuários, para obter permissões para essa ação contate seus superiores ou entre em contato com nosso suporte."
+        USER_HAS_NO_MANAGE_USER_PERMISSIONS: "Você não ter permissões concedidas para editar dados de outros usuários, para obter permissões para essa ação contate seus superiores ou entre em contato com nosso suporte.",
+
+        ADD_ROLE_MISSING_FIELDS: "Para adicionar um Papel/Permissão a um usário é preciso passar o ID e sua respectiva ROLE.",
+        ADD_ROLE_INVALID_ROLE_FORMAT: "O formato de role fornecido não é um formato válido. (string)",
+        ROLE_NOT_FOUND: "O nome de ROLE fornecido não é um nome válido. A ROLE fornecida não foi encontrada!",
+        ADD_ROLE_USER_ACCOUNT_NOT_ACTIVE: "O usuário que vocês está tentando adicionar role está atualmente inativo. Somente usuários ativos podem receber novas ROLES. Ative a conta do usuário em questão ou então entre em contato com o nosso suporte.",
+        USER_IS_NOT_OWNER: "Você não tem permissões suficientes para ceder ROLE de OWNER para o usuário informado. Somente usuários com ROLE de OWNER podem realizar está ação.",
+
+
+        USER_ID_NOT_FOUND: "Houve um problema ao autenticar seu usuário, por favor, faça login novamente. Se o problema persistir, entre em contato com o nosso suporte."
 
 
     },
@@ -58,7 +67,9 @@ const USER = {
 
         EDIT_PASSWORD_COMPLETED: "Sua senha foi redefinida com sucesso! Enviamos um e-mail de segurança para você com a confirmação dessa alteração. Se não foi você quem solicitou essa mudança, entre em contato com nosso Suporte imediatamente.",
 
-        PROFILE_CHANGES_MADE: "As alterações no perfil de usuário foram feitas com sucesso!"
+        PROFILE_CHANGES_MADE: "As alterações no perfil de usuário foram feitas com sucesso!",
+
+        ROLE_ADDED_SUCCESSFULLY: "Ação realizada com sucesso: A ROLE especificada foi adicionada ao ID de usuário especifícado",
 
     }
 }

@@ -71,4 +71,42 @@ export default class Role {
 
         return assignedRole;
     }
+
+    static async roleExists(roleName: string) {
+        const role = await prisma.roles.findFirst({
+            where: { role_name: roleName }
+        });
+
+        if (!role) {
+            return false;
+        }
+
+        return role;
+    }
+
+    static async hasOwnerRole(userId: string, role: string) {
+
+        const roleId = await prisma.roles.findFirst({
+            where: { role_name: Roles.OWNER },
+            select: { id: true }
+        });
+
+        if (!roleId) {
+            return false;
+        };
+
+        const owner = await prisma.userRoles.findFirst({
+            where: {
+                role_id: roleId.id,
+                AND:
+                { user_id: userId }
+            },
+        });
+
+        if (!owner) {
+            return false;
+        };
+
+        return owner;
+    }
 }
