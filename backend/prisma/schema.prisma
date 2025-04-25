@@ -1,0 +1,266 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model InitialSetup {
+  id            String    @id @default(uuid()) @db.Uuid
+  setupComplete Boolean   @default(false)
+  setupToken    String    @unique @db.VarChar(255)
+  created_at    DateTime  @default(now())
+  completed_at  DateTime?
+}
+
+model User {
+  id                String    @id @default(uuid()) @db.Uuid
+  username          String    @unique @db.VarChar(50)
+  email             String    @unique @db.VarChar(255)
+  password          String    @db.VarChar(255)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  last_login        DateTime?
+  status            String    @db.VarChar(20)
+  role              String    @db.VarChar(20)
+  confirmationToken String?   @unique
+  emailVerified     Boolean   @default(false)
+  isProtected       Boolean?   @default(false)
+
+  userPermissions     UserPermissions[]    @relation("UserUserPermissions")
+  userRoles           UserRoles[]          @relation("UserUserRoles")
+  loginAttempts       LoginAttempt[]
+  invalidTokens       InvalidToken[]
+  passwordResetTokens PasswordResetToken[]
+  profile             UserProfile?
+  inventories         Inventory[]
+  stockMovements      StockMovement[]      @relation("UserStockMovements")
+  inventoryItems      InventoryItem[]      @relation("UserInventoryItems")
+}
+
+model InvalidToken {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  token      String   @unique
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model PasswordResetToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  user_id    String    @db.Uuid
+  token      String    @unique
+  expires_at DateTime?
+  used       Boolean   @default(false)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model UserProfile {
+  id            String    @id @default(uuid()) @db.Uuid
+  user_id       String    @unique @db.Uuid
+  first_name    String?
+  last_name     String?
+  date_of_birth DateTime?
+  phone_number  String?   @unique
+  occupation    String?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model LoginAttempt {
+  id              String    @id @default(uuid()) @db.Uuid
+  user_id         String    @db.Uuid
+  ip_address      String?   @db.VarChar(45)
+  attempt_time    DateTime  @default(now())
+  success         Boolean
+  failed_attempts Int       @default(0)
+  lock_until      DateTime?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Roles {
+  id          String    @id @default(uuid()) @db.Uuid
+  role_name   String    @unique @db.VarChar(50)
+  description String?
+  status      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  userRoles UserRoles[] @relation("UserRoleId")
+}
+
+model Permissions {
+  id          String    @id @default(uuid()) @db.Uuid
+  permission  String    @unique @db.VarChar(100)
+  description String?
+  status      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  userPermissions UserPermissions[] @relation("UserPermissionId")
+}
+
+model UserRoles {
+  id          String    @id @default(uuid()) @db.Uuid
+  user_id     String    @db.Uuid
+  role_id     String    @db.Uuid
+  assigned_at DateTime  @default(now())
+  revoked_at  DateTime?
+
+  user User  @relation("UserUserRoles", fields: [user_id], references: [id], onDelete: Cascade)
+  role Roles @relation("UserRoleId", fields: [role_id], references: [id])
+}
+
+model UserPermissions {
+  id            String    @id @default(uuid()) @db.Uuid
+  user_id       String    @db.Uuid
+  permission_id String    @db.Uuid
+  granted_at    DateTime  @default(now())
+  revoked_at    DateTime?
+
+  permission Permissions @relation("UserPermissionId", fields: [permission_id], references: [id])
+  user       User        @relation("UserUserPermissions", fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id              String    @id @default(uuid()) @db.Uuid
+  name            String    @db.VarChar(100)
+  description     String?
+  category_id     String    @db.Uuid
+  barcode         String?   @unique @db.VarChar(50)
+  supplier_id     String?   @db.Uuid
+  stock           Int       @default(0)
+  unit_id         String    @db.Uuid
+  price           Decimal
+  expiration_date DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  supplier Supplier? @relation(fields: [supplier_id], references: [id])
+  category Category  @relation(fields: [category_id], references: [id])
+  unit     Unit      @relation(fields: [unit_id], references: [id])
+
+  stockMovements StockMovement[]
+  recipeItems    RecipeItem[]
+  inventories    InventoryItem[]
+}
+
+model Unit {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @unique @db.VarChar(50) // Ex: "kg", "L", "unidade"
+  products Product[]
+}
+
+model Category {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @unique @db.VarChar(50) // Ex: "Bebidas", "Carnes", "Grãos"
+  products Product[]
+}
+
+model Supplier {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String   @db.VarChar(100)
+  contact    String?  @db.VarChar(50)
+  email      String?  @db.VarChar(100)
+  phone      String?  @db.VarChar(20)
+  address    String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  products Product[]
+}
+
+model StockMovement {
+  id          String   @id @default(uuid()) @db.Uuid
+  user_id     String?  @db.Uuid
+  product_id  String   @db.Uuid
+  type_id     String   @db.Uuid
+  quantity    Int
+  unit_price  Decimal
+  total_price Decimal
+  source      String?
+  created_at  DateTime @default(now())
+
+  user    User?             @relation("UserStockMovements", fields: [user_id], references: [id], onDelete: SetNull)
+  product Product           @relation(fields: [product_id], references: [id])
+  type    StockMovementType @relation(fields: [type_id], references: [id])
+}
+
+model StockMovementType {
+  id             String          @id @default(uuid()) @db.Uuid
+  name           String          @unique @db.VarChar(50) // Ex: "Entrada", "Saída", "Ajuste"
+  stockMovements StockMovement[]
+}
+
+model Inventory {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String?  @db.Uuid
+  date       DateTime @default(now())
+  status     String   @default("pending") // Ex: pending, completed
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user           User?           @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  inventoryItems InventoryItem[]
+}
+
+model InventoryItem {
+  id             String  @id @default(uuid()) @db.Uuid
+  inventory_id   String  @db.Uuid
+  product_id     String  @db.Uuid
+  user_id        String? @db.Uuid
+  recorded_stock Int
+  real_stock     Int
+  discrepancy    Int     @default(0)
+
+  inventory Inventory @relation(fields: [inventory_id], references: [id])
+  product   Product   @relation(fields: [product_id], references: [id])
+  user      User?     @relation("UserInventoryItems", fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([inventory_id])
+  @@index([product_id])
+  @@index([user_id])
+}
+
+model Recipe {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(100)
+  category    String   @db.VarChar(50)
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  items RecipeItem[]
+}
+
+model RecipeItem {
+  id         String  @id @default(uuid()) @db.Uuid
+  recipe_id  String  @db.Uuid
+  product_id String  @db.Uuid
+  quantity   Decimal
+  unit       String  @db.VarChar(20)
+
+  recipe  Recipe  @relation(fields: [recipe_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+}

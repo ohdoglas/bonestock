@@ -1,0 +1,17 @@
+services:
+  bonestock_db:
+    container_name: bonestock_db
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - bonestock_network
+
+networks:
+  bonestock_network:
+    driver: bridge
